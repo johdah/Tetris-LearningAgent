@@ -6,6 +6,7 @@
 package tetris;
 
 import java.awt.Color;
+import tetris.Figure;
 
 /**
  *

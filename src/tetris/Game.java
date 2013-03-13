@@ -45,6 +45,10 @@ import java.util.Random;
  * @author   Per Cederberg, per@percederberg.net
  */
 public class Game extends Object {
+    
+    //Later note variables for AI here
+    
+    //TetrisAI ai = new GeneticAI(variables);
     TetrisAI ai = new StupidAI();
     public static Random rnd = new Random(1);
     /**
@@ -120,18 +124,27 @@ public class Game extends Object {
     private boolean preview = true;
 
     /**
-     * The move lock flag. If this flag is set, the current figure
+     * The move lockThread flag. If this flag is set, the current figure
      * cannot be moved. This flag is set when a figure is moved all 
      * the way down, and reset when a new figure is displayed.
      */
     private boolean moveLock = false;
 
+    // Fields
+    private boolean testingAI = false;
+    private boolean isLocked = false;
+    
     /**
      * Creates a new Tetris game. The square board will be given
      * the default size of 10x20.
      */
     public Game() {
         this(10, 20);
+    }
+    
+    public Game(TetrisAI ai) {
+        board = new SquareBoard(10, 20);
+        this.ai = ai;
     }
 
     /**
@@ -177,12 +190,22 @@ public class Game extends Object {
     boolean fullSpeed = true;
     boolean aiPlay = true;
     private void handleStart() {
-        long seed = Integer.parseInt(component.seed.getText());
-        if(seed==0)
-            seed=System.currentTimeMillis();
+        long seed = 0;
+        
+        if(testingAI){
+            seed = 1;
+            //seed = System.currentTimeMillis(); //In the future!
+        }else{
+            seed = Integer.parseInt(component.seed.getText());
+            if(seed==0)
+                seed=System.currentTimeMillis();
+        }
+            
         rnd = new Random(seed);
-        aiPlay = component.ai.getState();
-        fullSpeed = component.fullSpeed.getState();
+        if(!testingAI){ //Speed up play
+            aiPlay = component.ai.getState();
+            fullSpeed = component.fullSpeed.getState();
+        }
         // Reset score and figures
         level = 1;
         score = 0;
@@ -197,7 +220,8 @@ public class Game extends Object {
         previewBoard.clear();
         handleLevelModification();
         handleScoreModification();
-        component.button.setLabel("Pause");
+        if(!testingAI)
+            component.button.setLabel("Pause");
 
         // Start game thread
         
@@ -225,7 +249,29 @@ public class Game extends Object {
 
         // Handle components
         board.setMessage("Game Over");
-        component.button.setLabel("Start");
+        if(!testingAI)
+            component.button.setLabel("Start");
+    }
+    
+    public int GetTestAIScore() throws InterruptedException {
+        testingAI = true;
+     
+        thread = new GameThread();
+        handleStart();
+        lockThread();
+        return score;
+    }
+
+    public synchronized void lockThread() throws InterruptedException {
+        while (isLocked) {
+            wait();
+        }
+        isLocked = true;
+    }
+
+    public synchronized void unlockThread() {
+        isLocked = false;
+        notify();
     }
 
     /**
@@ -253,7 +299,8 @@ public class Game extends Object {
      * label and adjust the thread speed.
      */
     private void handleLevelModification() {
-        component.levelLabel.setText("Level: " + level);
+        if(!testingAI)
+            component.levelLabel.setText("Level: " + level);
         thread.adjustSpeed();
     }
     
@@ -262,7 +309,8 @@ public class Game extends Object {
      * label.
      */
     private void handleScoreModification() {
-        component.scoreLabel.setText("Score: " + score);
+        if(!testingAI)
+            component.scoreLabel.setText("Score: " + score);
     }
 
     /**
