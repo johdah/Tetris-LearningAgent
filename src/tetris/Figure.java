@@ -74,7 +74,7 @@ public class Figure extends Object {
      * The square board to which the figure is attached. If this 
      * variable is set to null, the figure is not attached.
      */
-    private SquareBoard board = null;
+    private GameBoard board = null;
 
     /**
      * The horizontal figure position on the board. This value has no
@@ -296,7 +296,7 @@ public class Figure extends Object {
      * @return true if the figure could be attached, or
      *         false otherwise
      */
-    public boolean attach(SquareBoard board, boolean center) {
+    public boolean attach(GameBoard board, boolean center) {
         int  newX;
         int  newY;
         int  i;
