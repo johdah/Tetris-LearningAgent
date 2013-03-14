@@ -12,7 +12,6 @@ import tetris.players.tdLearning.interfaces.IAction;
  * Time: 11:19
  */
 public class GridActionImpl implements IAction {
-
     /**
      * An integer representation of a <code>GridAction</code>
      * instance; the <code>GridState</code> class provides constants

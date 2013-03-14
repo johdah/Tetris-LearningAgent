@@ -13,11 +13,6 @@ import java.awt.Color;
  * @author RIK
  */
 public class StupidAI extends AbstractAI {
-    
-
-
-
-    
     public double rateBoard(Color[][] board) {
         int maxHeight = getMaxHeight(board);
         int nrOfWholes = getHoles(board, maxHeight);

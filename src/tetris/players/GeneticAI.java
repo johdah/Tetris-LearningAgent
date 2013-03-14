@@ -82,8 +82,8 @@ individerna. Ni får testa er fram med olika värden på "tournament size", t.ex
 
    /**
     * Crossover individuals
-    * @param indiv1
-    * @param indiv2
+    * @param a
+    * @param b
     * @return newSol
     */   
     private Individual crossover(Individual a, Individual b){
@@ -104,7 +104,6 @@ individerna. Ni får testa er fram med olika värden på "tournament size", t.ex
     
     /**
      * Select individual for crossover
-     * @param pop
      * @return
      */
     private Individual tournamentSelection() {
