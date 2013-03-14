@@ -20,38 +20,85 @@ public class GeneticAI extends AbstractAI {
     private final int MAX_POPULATIONSIZE = 1000;
     private final double tournamentselectionparameter = 0.7;
     private final int tournamentSize = 4;
+    private final int MAX_GENERATION = 1000;
+
+
     private static final double uniformRate = 0.5;
-    
+    private final double probabilityCrossover = 0.8;
+
     private Individual[] population;
+    private Individual[] newPopulation;
+    private int currentGeneration = 0;
+
     private int m; //Size of the gene
     
     @Override
     double rateBoard(Color[][] board) {
         Random rnd = new Random();
         initalizePopulation(rnd.nextInt(MAX_POPULATIONSIZE));
-        evaluateIndividuals();
-        
-        
+
+
+        for(currentGeneration = 0; currentGeneration < MAX_GENERATION; currentGeneration++){
+            evaluateIndividuals();
+            //Create next generation
+            createNextGeneration();
+
+        }
+
+        //Get the one that is teh best
+        Individual fittest = population[0];
+        for(Individual i : population){
+            if(i.getFitness() > fittest.getFitness()){
+                fittest = i;
+            }
+        }
+        /*
+        public Chromosome getFittest(List<Chromosome> population) {
+            Chromosome fittest = null;
+            double maxFitness = 0;
+
+            for (Chromosome c : population) {
+                if (c.getFitness() > maxFitness) {
+                    maxFitness = c.getFitness();
+                    fittest = c;
+                }
+            }
+
+            return fittest;
+        }
+        */
         
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
+    private void createNextGeneration(){
+        for(int i = 0; i < newPopulation.length; i++){
+            Individual[] pair = tournament();
+            Individual newIndiv = crossover(pair[0], pair[1]);
+            mutate(newIndiv);
+            newPopulation[i] = newIndiv;
+        }
+
+        for(int j = 0; j < population.length; j++){
+            population[j] = newPopulation[j];
+        }
+
+    }
+
     private void evaluateIndividuals(){
         for(int i = 0; i < population.length; i++){
             Individual currentIndividual = population[i];
-            
-            population[i].decodeChromosone();
-            population[i].evaluate();
-            
+            currentIndividual.decodeChromosone();
+            currentIndividual.evaluate();
+            population[i] = currentIndividual;
         }
-        
-        tournament();
     }
     
     private void initalizePopulation(int N){
         m = k*n; //Length of the string
         population = new Individual[N];
-        
+        newPopulation = new Individual[N];
+
         for(int i = 0; i < N; i++){
             population[i] = new Individual(m);
             population[i].generateIndividual(m);
@@ -59,7 +106,7 @@ public class GeneticAI extends AbstractAI {
         
     }
     
-    private void tournament(){
+    private Individual[] tournament(){
         //Slumpa ett tal r inom intervallet 0-1.
         //Välj den individ som har värde närmast tournamentselectionparamenter
         //ELLER
@@ -71,16 +118,38 @@ individen inte selekteras, återupprepas proceduren för de kvarvarande j-1 indi
 för "the tournament size". En större tournament size leder till större konkurrens bland 
 individerna. Ni får testa er fram med olika värden på "tournament size", t.ex. 2-4.
          */
-        
-        Individual indiv1 = tournamentSelection();
-        Individual indiv2 = tournamentSelection();
-        Individual newIndiv = crossover(indiv1, indiv2);
+
+        Individual[] winningPair = new Individual[2];
+
+        winningPair[0] = tournamentSelection();
+        winningPair[1] = tournamentSelection();
+        return winningPair;
         //newPopulation.saveIndividual(i, newIndiv);
 	
     }
 
+    /**
+     * Mutate individual
+     * @param a
+     * @return newSol
+     */
+    private void mutate(Individual a){
 
-   /**
+        double mutationRate = 1.00/m;
+
+        for(int i = 0; i < a.size(); i++){
+            if(Math.random() <= mutationRate){
+                if(a.getGene(i) == 0)
+                    a.setGene(i,(byte)1);
+                else
+                    a.setGene(i,(byte)0);
+            }
+        }
+
+    }
+
+
+    /**
     * Crossover individuals
     * @param a
     * @param b
@@ -88,18 +157,23 @@ individerna. Ni får testa er fram med olika värden på "tournament size", t.ex
     */   
     private Individual crossover(Individual a, Individual b){
         Individual newSol = new Individual(m);
-		
-		// Loop through genes
-		for(int i = 0; i < a.size(); i++) {
-			// Crossover
-			if(Math.random() <= uniformRate) {
-				newSol.setGene(i, a.getGene(i));
-			} else {
-				newSol.setGene(i, b.getGene(i));
-			}
-		}
-		
-		return newSol;
+
+        Random rnd = new Random();
+
+        if(rnd.nextInt((int) ((1-tournamentselectionparameter) * 10)) == 0){
+            // Loop through genes
+            for(int i = 0; i < a.size(); i++) {
+                // Crossover
+                if(Math.random() <= uniformRate) {
+                    newSol.setGene(i, a.getGene(i));
+                } else {
+                    newSol.setGene(i, b.getGene(i));
+                }
+            }
+
+            return newSol;
+        }
+        return a;
     }
     
     /**
