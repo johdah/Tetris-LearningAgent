@@ -2,7 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tetris;
+package tetris.players;
+
+import tetris.players.AbstractAI;
 
 import java.awt.Color;
 
@@ -10,7 +12,7 @@ import java.awt.Color;
  *
  * @author RIK
  */
-public class StupidAI extends TetrisAI {
+public class StupidAI extends AbstractAI {
     
 
 

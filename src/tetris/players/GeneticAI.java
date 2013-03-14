@@ -2,17 +2,19 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tetris;
+package tetris.players;
+
+import tetris.Individual;
+import tetris.players.AbstractAI;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Random;
 /**
  *
  * @author Administratör
  */
-public class GeneticAI extends TetrisAI{
-    
+public class GeneticAI extends AbstractAI {
+
     private final int k = 8; //Bits per variable
     private final int n = 2; //Number of variables
     private final int MAX_POPULATIONSIZE = 1000;

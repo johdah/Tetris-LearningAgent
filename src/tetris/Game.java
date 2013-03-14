@@ -16,6 +16,9 @@
 
 package tetris;
 
+import tetris.players.AbstractAI;
+import tetris.players.GeneticAI;
+
 import java.awt.Button;
 import java.awt.Checkbox;
 import java.awt.Component;
@@ -48,8 +51,8 @@ public class Game extends Object {
     
     //Later note variables for AI here
     
-    TetrisAI ai = new GeneticAI();
-    //TetrisAI ai = new StupidAI();
+    AbstractAI ai = new GeneticAI();
+    //AbstractAI ai = new StupidAI();
     public static Random rnd = new Random(1);
     /**
      * The main square board. This board is used for the game itself.
@@ -142,7 +145,7 @@ public class Game extends Object {
         this(10, 20);
     }
     
-    public Game(TetrisAI ai) {
+    public Game(AbstractAI ai) {
         board = new SquareBoard(10, 20);
         this.ai = ai;
     }

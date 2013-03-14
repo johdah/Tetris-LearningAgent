@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package tetris;
+package tetris.players;
 
 import java.awt.Color;
 import tetris.Figure;
@@ -12,11 +12,10 @@ import tetris.Figure;
  *
  * @author RIK
  */
-public abstract class TetrisAI {
-    
+public abstract class AbstractAI {
     abstract double rateBoard(Color[][] board);
     
-        public void makeBestMove(Color[][] board, Figure figure) {
+    public void makeBestMove(Color[][] board, Figure figure) {
         if (figure == null) {
             return;
         }
@@ -77,7 +76,7 @@ public abstract class TetrisAI {
         figure.mark();
     }
         
-            private void printBoard(Color[][] b) {
+    private void printBoard(Color[][] b) {
         System.out.println("");
         for (int h = 0; h < b.length; h++) {
             for (int w = 0; w < b[0].length; w++) {

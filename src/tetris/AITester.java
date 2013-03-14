@@ -4,12 +4,14 @@
  */
 package tetris;
 
+import tetris.players.AbstractAI;
+
 /**
  *
  * @author Fredrik
  */
 public class AITester {
-    public int GetTestGameScore(TetrisAI ai) throws InterruptedException{     
+    public int GetTestGameScore(AbstractAI ai) throws InterruptedException{
         Game game = new Game(ai);
   
         int score = game.GetTestAIScore();
