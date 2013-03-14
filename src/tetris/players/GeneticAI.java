@@ -20,7 +20,7 @@ public class GeneticAI extends AbstractAI {
     private final int MAX_POPULATIONSIZE = 1000;
     private final double tournamentselectionparameter = 0.7;
     private final int tournamentSize = 4;
-    private final int MAX_GENERATION = 1000;
+    private final int MAX_GENERATION = 100;
 
 
     private static final double uniformRate = 0.5;
@@ -35,7 +35,11 @@ public class GeneticAI extends AbstractAI {
     @Override
     double rateBoard(Color[][] board) {
         Random rnd = new Random();
-        initalizePopulation(rnd.nextInt(MAX_POPULATIONSIZE));
+        int populationSize = rnd.nextInt(MAX_POPULATIONSIZE);
+        while(populationSize == 0)
+            populationSize = rnd.nextInt(MAX_POPULATIONSIZE);
+
+        initalizePopulation(populationSize);
 
 
         for(currentGeneration = 0; currentGeneration < MAX_GENERATION; currentGeneration++){
@@ -46,29 +50,23 @@ public class GeneticAI extends AbstractAI {
         }
 
         //Get the one that is teh best
-        Individual fittest = population[0];
-        for(Individual i : population){
-            if(i.getFitness() > fittest.getFitness()){
-                fittest = i;
-            }
-        }
-        /*
-        public Chromosome getFittest(List<Chromosome> population) {
-            Chromosome fittest = null;
-            double maxFitness = 0;
-
-            for (Chromosome c : population) {
-                if (c.getFitness() > maxFitness) {
-                    maxFitness = c.getFitness();
-                    fittest = c;
+        Individual fittest = null;
+        try{
+            fittest = population[0];
+            for(Individual i : population){
+                if(i.getFitness() > fittest.getFitness()){
+                    fittest = i;
                 }
             }
-
-            return fittest;
+        }catch (Exception e){
+           e.printStackTrace();
         }
-        */
-        
-        throw new UnsupportedOperationException("Not supported yet.");
+
+
+        //System.out.println("Fittest: "+fittest.getFitness());
+        return fittest.getFitness();
+
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     private void createNextGeneration(){
