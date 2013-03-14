@@ -4,9 +4,6 @@
  */
 package tetris.players;
 
-import tetris.Individual;
-import tetris.players.AbstractAI;
-
 import java.awt.Color;
 import java.util.Random;
 /**
@@ -20,7 +17,7 @@ public class GeneticAI extends AbstractAI {
     private final int MAX_POPULATIONSIZE = 1000;
     private final double tournamentselectionparameter = 0.7;
     private final int tournamentSize = 4;
-    private final int MAX_GENERATION = 100;
+    private final int MAX_GENERATION = 20;
 
 
     private static final double uniformRate = 0.5;
@@ -34,6 +31,7 @@ public class GeneticAI extends AbstractAI {
     
     @Override
     double rateBoard(Color[][] board) {
+        FitnessCalc.setBoard(board);
         Random rnd = new Random();
         int populationSize = rnd.nextInt(MAX_POPULATIONSIZE);
         while(populationSize == 0)
@@ -63,7 +61,7 @@ public class GeneticAI extends AbstractAI {
         }
 
 
-        //System.out.println("Fittest: "+fittest.getFitness());
+        System.out.println("Fittest: "+fittest.getFitness());
         return fittest.getFitness();
 
         //throw new UnsupportedOperationException("Not supported yet.");

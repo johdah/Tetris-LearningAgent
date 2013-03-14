@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tetris;
+package tetris.players;
 
 /**
  *
@@ -39,6 +39,7 @@ public class Individual {
 	}
 
         public void decodeChromosone(){
+            geneLen = genes.length;
             double x1 = 0-d+((2*d)/(1-Math.pow(2, geneLen/2)));
             double x2 = 0-d+((2*d)/(1-Math.pow(2, geneLen/2)));
             
@@ -73,7 +74,7 @@ public class Individual {
         }
         
         public void evaluate(){
-            fitness = weight1*weight2;
+            fitness = FitnessCalc.getFitness(this);
         }
 	/**
 	 * Get fitness
