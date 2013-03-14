@@ -48,8 +48,8 @@ public class Game extends Object {
     
     //Later note variables for AI here
     
-    //TetrisAI ai = new GeneticAI(variables);
-    TetrisAI ai = new StupidAI();
+    TetrisAI ai = new GeneticAI();
+    //TetrisAI ai = new StupidAI();
     public static Random rnd = new Random(1);
     /**
      * The main square board. This board is used for the game itself.
