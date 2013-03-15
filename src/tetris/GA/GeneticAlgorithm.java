@@ -8,6 +8,7 @@ import java.util.Random;
 public class GeneticAlgorithm {
     private int mutationChance;
     private int populationSize;
+    private int tournamentSize;
     private IProblem problem;
     private int generationLimit;
     
@@ -18,7 +19,7 @@ public class GeneticAlgorithm {
     private double bestFitness;
 
     public static void main(String[] args) {
-        GeneticAlgorithm ga = new GeneticAlgorithm(100, 50, new TetrisProblem(), 1000);
+        GeneticAlgorithm ga = new GeneticAlgorithm(100, 50, new TetrisProblem(), 1000,4);
 
         Individual2 indi = ga.PerformRun();
 
@@ -26,11 +27,12 @@ public class GeneticAlgorithm {
         System.out.println("Information:\n" + indi.getInfo());
     }
 
-    public GeneticAlgorithm(int popSize,int mutationChance, IProblem problem, int generationLimit) {
-        populationSize = popSize;
+    public GeneticAlgorithm(int popSize,int mutationChance, IProblem problem, int generationLimit, int tourSize) {
+        this.populationSize = popSize;
         this.mutationChance = mutationChance;       
         this.problem = problem;
         this.generationLimit = generationLimit;
+        this.tournamentSize = tourSize;
     }
 
     private Individual2 PerformRun() {    
@@ -38,7 +40,7 @@ public class GeneticAlgorithm {
         population = new ArrayList<Individual2>();
         int generation = 0;
 
-        for (int i = 0; i < populationSize; i++) {
+        for (int i = 0; i < this.populationSize; i++) {
             population.add(problem.CreateRandomIndividual());
         }
 
@@ -46,16 +48,16 @@ public class GeneticAlgorithm {
         long totalTime = 0;
         while (true) {
             int percentDone = 0;
-            avgFitness = 0;
+            this.avgFitness = 0;
             int progress = 1;
-            System.out.print("Arbetar... ");
+            System.out.print("Calculating... ");
             for (Individual2 individual : population) {
                 individual.setFitness(problem.CalcFitness(individual));
                 individual.setInfo(problem.GetInfo(individual));
                 avgFitness += individual.getFitness();
                 if (progress == populationSize / 10) {
                     percentDone += 10;
-                    System.out.print(percentDone + "% ");
+                    System.out.print(percentDone + "% /n");
                     progress = 0;
                 }
                 progress++;
@@ -79,7 +81,7 @@ public class GeneticAlgorithm {
                 break;
             }
 
-            nextGen = new ArrayList<Individual2>();
+            this.nextGen = new ArrayList<Individual2>();
 
             while (population.size() > nextGen.size()) {
                 crossover(runTournament(), runTournament());
@@ -94,25 +96,25 @@ public class GeneticAlgorithm {
     }
 
     private void crossover(Individual2 parent1, Individual2 parent2) {
-        //Hitta crossoverpunkt
+        //Find crossoverpoint
 
         Random r = new Random();
-        int genelength = parent1.getGene().length();
-        int crossoverpoint = r.nextInt(genelength - 1);
+        int geneLength = parent1.getGene().length();
+        int crossoverPoint = r.nextInt(geneLength - 1);
 
-        String parent1part1 = parent1.getGene().substring(0, crossoverpoint);
-        String parent1part2 = parent1.getGene().substring(crossoverpoint, genelength);
+        String parent1part1 = parent1.getGene().substring(0, crossoverPoint);
+        String parent1part2 = parent1.getGene().substring(crossoverPoint, geneLength);
 
-        String parent2part1 = parent2.getGene().substring(0, crossoverpoint);
-        String parent2part2 = parent2.getGene().substring(crossoverpoint, genelength);
+        String parent2part1 = parent2.getGene().substring(0, crossoverPoint);
+        String parent2part2 = parent2.getGene().substring(crossoverPoint, geneLength);
 
         String child1 = parent1part1 + parent2part2;
         String child2 = parent2part1 + parent1part2;
 
-        if (r.nextInt(1000) < mutationChance) {
+        if (r.nextInt(100) < mutationChance) {
             child1 = MutateGene(child1);
         }
-        if (r.nextInt(1000) < mutationChance) {
+        if (r.nextInt(100) < mutationChance) {
             child2 = MutateGene(child2);
         }
 
@@ -126,7 +128,7 @@ public class GeneticAlgorithm {
         Random random = new Random();
 
         //Select random individual to place in tournament.
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < tournamentSize; i++) {
             Individual2 individual = population.get(random.nextInt(population.size() - 1));
             tournamentPopulation.add(individual);
         }
