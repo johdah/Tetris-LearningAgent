@@ -2,7 +2,6 @@ package tetris.GA;
 
 import java.lang.String;
 import java.util.List;
-import tetris.GA.Individual2;
 
 public interface IProblem {
     public abstract Individual2 CreateRandomIndividual();

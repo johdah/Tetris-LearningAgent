@@ -6,28 +6,26 @@ import java.util.Random;
 
 
 public class GeneticAlgorithm {
+    private IProblem problem;
     private int mutationChance;
     private int populationSize;
     private int tournamentSize;
-    private IProblem problem;
     private int generationLimit;
     
     private List<Individual2> population;
     private List<Individual2> nextGen;
-    
-    private int avgFitness;    
-    private double bestFitness;
 
     public static void main(String[] args) {
-        GeneticAlgorithm ga = new GeneticAlgorithm(100, 50, new TetrisProblem(), 1000,4);
+        //GeneticAlgorithm ga = new GeneticAlgorithm(10, 1000, new MathProblem(), 100,4);
+        GeneticAlgorithm ga = new GeneticAlgorithm(10, 500, new TetrisProblem(), 100,4);
 
         Individual2 indi = ga.PerformRun();
 
-        System.out.println("Best fitness: " + indi.getFitness());
-        System.out.println("Information:\n" + indi.getInfo());
+        System.out.println("Best fitness: " + indi.GetFitness());
+        System.out.println("Information:\n" + indi.GetInfo());
     }
 
-    public GeneticAlgorithm(int popSize,int mutationChance, IProblem problem, int generationLimit, int tourSize) {
+    public GeneticAlgorithm(int mutationChance,int popSize, IProblem problem, int generationLimit, int tourSize) {
         this.populationSize = popSize;
         this.mutationChance = mutationChance;       
         this.problem = problem;
@@ -48,32 +46,32 @@ public class GeneticAlgorithm {
         long totalTime = 0;
         while (true) {
             int percentDone = 0;
-            this.avgFitness = 0;
+            int avgFitness = 0;
             int progress = 1;
             System.out.print("Calculating... ");
             for (Individual2 individual : population) {
-                individual.setFitness(problem.CalcFitness(individual));
-                individual.setInfo(problem.GetInfo(individual));
-                avgFitness += individual.getFitness();
+                individual.SetFitness(problem.CalcFitness(individual));
+                individual.SetInfo(problem.GetInfo(individual));
+                avgFitness += individual.GetFitness();
                 if (progress == populationSize / 10) {
                     percentDone += 10;
-                    System.out.print(percentDone + "% /n");
+                    System.out.print(percentDone + "% ");
                     progress = 0;
                 }
                 progress++;
             }
             System.out.println("");
-            Individual2 i = getBestIndividual(population);
+            Individual2 i = GetBestIndividual(population);
 
-            bestFitness = i.getFitness() * -1;
-            avgFitness = ((-1 * avgFitness) / population.size());
+            double bestFitness = i.GetFitness();
+            avgFitness = ((avgFitness) / population.size());
             totalTime += ((System.currentTimeMillis() - time) / 1000);
-            System.out.println("\n---- Generation " + generation + " Population: " + populationSize + " Mutation chance: " + (mutationChance / 10) + "% ----");
+            System.out.println("\n---- Generation " + generation + " Population: " + populationSize + " Mutation chance: " + mutationChance  + "% ----");
             System.out.println("Calculation time: " + ((System.currentTimeMillis() - time) / 1000) + "(" + totalTime + ") s");
             System.out.println("Best score:   " + (bestFitness));
             System.out.println("Average score:    " + (avgFitness));
 
-            System.out.println("Weights\n" + i.getInfo());
+            System.out.println("Weights:\n" + i.GetInfo());
             System.out.println("");
 
             //Terminate if termination criteria is met. Defined in IProblem
@@ -84,7 +82,7 @@ public class GeneticAlgorithm {
             this.nextGen = new ArrayList<Individual2>();
 
             while (population.size() > nextGen.size()) {
-                crossover(runTournament(), runTournament());
+                Crossover(RunTournament(), RunTournament());
             }
 
             population = nextGen;
@@ -92,21 +90,21 @@ public class GeneticAlgorithm {
             time = System.currentTimeMillis();
         }
 
-        return getBestIndividual(population);
+        return GetBestIndividual(population);
     }
 
-    private void crossover(Individual2 parent1, Individual2 parent2) {
+    private void Crossover(Individual2 parent1, Individual2 parent2) {
         //Find crossoverpoint
 
         Random r = new Random();
-        int geneLength = parent1.getGene().length();
+        int geneLength = parent1.GetGene().length();
         int crossoverPoint = r.nextInt(geneLength - 1);
 
-        String parent1part1 = parent1.getGene().substring(0, crossoverPoint);
-        String parent1part2 = parent1.getGene().substring(crossoverPoint, geneLength);
+        String parent1part1 = parent1.GetGene().substring(0, crossoverPoint);
+        String parent1part2 = parent1.GetGene().substring(crossoverPoint, geneLength);
 
-        String parent2part1 = parent2.getGene().substring(0, crossoverPoint);
-        String parent2part2 = parent2.getGene().substring(crossoverPoint, geneLength);
+        String parent2part1 = parent2.GetGene().substring(0, crossoverPoint);
+        String parent2part2 = parent2.GetGene().substring(crossoverPoint, geneLength);
 
         String child1 = parent1part1 + parent2part2;
         String child2 = parent2part1 + parent1part2;
@@ -123,7 +121,7 @@ public class GeneticAlgorithm {
         nextGen.add(new Individual2(child2));
     }
 
-    private Individual2 runTournament() {
+    private Individual2 RunTournament() {
         List<Individual2> tournamentPopulation = new ArrayList<Individual2>();
         Random random = new Random();
 
@@ -133,7 +131,7 @@ public class GeneticAlgorithm {
             tournamentPopulation.add(individual);
         }
 
-        return getBestIndividual(tournamentPopulation);
+        return GetBestIndividual(tournamentPopulation);
     }
 
     private String MutateGene(String gene) {
@@ -152,12 +150,12 @@ public class GeneticAlgorithm {
         return mutatedGene.toString();
     }
 
-    private Individual2 getBestIndividual(List<Individual2> individuals) {
+    private Individual2 GetBestIndividual(List<Individual2> individuals) {
         Individual2 bestIndividual = null;
         double maxFitness = Double.MAX_VALUE;
         for (Individual2 individual : individuals) {
-            if (maxFitness > individual.getFitness()) {
-                maxFitness = individual.getFitness();
+            if (maxFitness > individual.GetFitness()) {
+                maxFitness = individual.GetFitness();
                 bestIndividual = individual;
             }
         }

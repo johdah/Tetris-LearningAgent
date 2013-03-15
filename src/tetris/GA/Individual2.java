@@ -11,22 +11,22 @@ public class Individual2 {
     public Individual2(String gene) {
         _gene = gene;
     }
-    public String getGene() {
+    public String GetGene() {
         return _gene;
     }
 
-    public double getFitness(){
+    public double GetFitness(){
         return _fitness;
     }
 
-    void setFitness(double fitness) {
+    void SetFitness(double fitness) {
         _fitness = fitness;
     }
 
-    public String getInfo() {
+    public String GetInfo() {
         return _info;
     }
-    public void setInfo(String info) {
+    public void SetInfo(String info) {
         _info = info;
     }
 }
