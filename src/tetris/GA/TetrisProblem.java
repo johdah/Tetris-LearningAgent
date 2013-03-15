@@ -1,5 +1,6 @@
 package tetris.GA;
 
+import java.lang.*;
 import java.util.List;
 
 public class TetrisProblem implements IProblem {
