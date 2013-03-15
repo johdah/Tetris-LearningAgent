@@ -3,12 +3,12 @@ package tetris.GA;
 import java.lang.Double;
 import java.lang.String;
 
-class Individual2 {
+public class Individual2 {
     private String _info;
     private String _gene;
     private double _fitness = Double.MAX_VALUE;
 
-    Individual2(String gene) {
+    public Individual2(String gene) {
         _gene = gene;
     }
     public String getGene() {
