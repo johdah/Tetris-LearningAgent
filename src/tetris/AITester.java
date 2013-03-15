@@ -6,10 +6,6 @@ package tetris;
 
 import tetris.players.AbstractAI;
 
-/**
- *
- * @author Fredrik
- */
 public class AITester {
     public int GetTestGameScore(AbstractAI ai) throws InterruptedException{
         Game game = new Game(ai);
