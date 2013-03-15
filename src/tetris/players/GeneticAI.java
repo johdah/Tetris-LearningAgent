@@ -14,7 +14,7 @@ public class GeneticAI extends AbstractAI {
 
     private final int k = 8; //Bits per variable
     private final int n = 2; //Number of variables
-    private final int MAX_POPULATIONSIZE = 1000;
+    private final int MAX_POPULATIONSIZE = 60;
     private final double tournamentselectionparameter = 0.7;
     private final int tournamentSize = 4;
     private final int MAX_GENERATION = 20;
@@ -37,8 +37,8 @@ public class GeneticAI extends AbstractAI {
         while(populationSize == 0)
             populationSize = rnd.nextInt(MAX_POPULATIONSIZE);
 
-        initalizePopulation(populationSize);
-
+        //initalizePopulation(populationSize);
+        initalizePopulation(MAX_POPULATIONSIZE);
 
         for(currentGeneration = 0; currentGeneration < MAX_GENERATION; currentGeneration++){
             evaluateIndividuals();
@@ -62,6 +62,7 @@ public class GeneticAI extends AbstractAI {
 
 
         System.out.println("Fittest: "+fittest.getFitness());
+
         return fittest.getFitness();
 
         //throw new UnsupportedOperationException("Not supported yet.");
@@ -71,10 +72,14 @@ public class GeneticAI extends AbstractAI {
         for(int i = 0; i < newPopulation.length; i++){
             Individual[] pair = tournament();
             Individual newIndiv = crossover(pair[0], pair[1]);
-            mutate(newIndiv);
+
             newPopulation[i] = newIndiv;
         }
 
+        for(int a = 1; a < newPopulation.length; a++){
+            mutate(newPopulation[a]);
+
+        }
         for(int j = 0; j < population.length; j++){
             population[j] = newPopulation[j];
         }
@@ -131,7 +136,8 @@ individerna. Ni får testa er fram med olika värden på "tournament size", t.ex
      */
     private void mutate(Individual a){
 
-        double mutationRate = 1.00/m;
+        //double mutationRate = 1.00/m;
+        double mutationRate = 0.015;
 
         for(int i = 0; i < a.size(); i++){
             if(Math.random() <= mutationRate){
