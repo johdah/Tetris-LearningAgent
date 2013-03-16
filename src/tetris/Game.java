@@ -18,6 +18,7 @@ package tetris;
 
 import tetris.players.AbstractAI;
 import tetris.players.GeneticAI;
+import tetris.players.GeneticAI2;
 
 import java.awt.Button;
 import java.awt.Checkbox;
@@ -48,10 +49,18 @@ import java.util.Random;
  * @author   Per Cederberg, per@percederberg.net
  */
 public class Game extends Object {
-    
-    //Later note variables for AI here
-    
-    AbstractAI ai = new GeneticAI();
+
+    //GA AI
+    float clear = (float)   0.55714273;
+    float nrOfWholes = (float) 0.9553695;
+    float bumps = (float)  0.18940496;
+    float touchwall = (float)     0.14456984;
+    float nonFullLines=(float)  0.470316;
+    float fullLines=(float)   0.41492552;
+    float wells=(float)   0.35952383;
+    float height=(float)  0.9065037;
+
+    AbstractAI ai = new GeneticAI2(clear, nrOfWholes, bumps,  touchwall, nonFullLines, fullLines, wells, height);
     //AbstractAI ai = new StupidAI();
     public static Random rnd = new Random(1);
     /**
@@ -196,8 +205,8 @@ public class Game extends Object {
         long seed = 0;
         
         if(testingAI){
-            seed = 1;
-            //seed = System.currentTimeMillis(); //In the future!
+            //seed = 1;
+            seed = System.currentTimeMillis(); //In the future!
         }else{
             seed = Integer.parseInt(component.seed.getText());
             if(seed==0)
@@ -223,8 +232,10 @@ public class Game extends Object {
         previewBoard.clear();
         handleLevelModification();
         handleScoreModification();
-        if(!testingAI)
+
+        if(!testingAI)      {
             component.button.setLabel("Pause");
+        }
 
         // Start game thread
         
@@ -254,6 +265,8 @@ public class Game extends Object {
         board.setMessage("Game Over");
         if(!testingAI)
             component.button.setLabel("Start");
+
+        unlockThread();
     }
     
     public int GetTestAIScore() throws InterruptedException {
