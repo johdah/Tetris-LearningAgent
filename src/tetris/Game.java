@@ -66,13 +66,13 @@ public class Game extends Object {
     /**
      * The main square board. This board is used for the game itself.
      */
-    private GameBoard board = null;
+    private SquareBoard board = null;
 
     /**
      * The preview square board. This board is used to display a 
      * preview of the figures.
      */
-    private GameBoard previewBoard = new GameBoard(5, 5);
+    private SquareBoard previewBoard = new SquareBoard(5, 5);
 
     /**
      * The figures used on both boards. All figures are reutilized in 
@@ -155,7 +155,7 @@ public class Game extends Object {
     }
     
     public Game(AbstractAI ai) {
-        board = new GameBoard(10, 20);
+        board = new SquareBoard(10, 20);
         this.ai = ai;
     }
 
@@ -167,7 +167,7 @@ public class Game extends Object {
      * @param height    the height of the square board (in positions)
      */
     public Game(int width, int height) {
-        board = new GameBoard(width, height);
+        board = new SquareBoard(width, height);
         board.setMessage("Press start");
         thread = new GameThread();
     }
