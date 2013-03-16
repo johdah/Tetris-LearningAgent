@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 public class GeneticAlgorithm {
-    double bestFitness;
-    double avgFitness;
     private IProblem problem;
     private int mutationChance;
     private int generationLimit;
@@ -41,10 +39,15 @@ public class GeneticAlgorithm {
 
         long time = System.currentTimeMillis();
         long totalTime = 0;
+        int percentDone;
+        double avgFitness;
+        int progress;
+        double bestFitness;
+
         while (true) {
-            int percentDone = 0;
+            percentDone = 0;
             avgFitness = 0;
-            int progress = 1;
+            progress = 1;
             System.out.print("Calculating... ");
             for (Individual2 individual : population) {
                 individual.setFitness(problem.calcFitness(individual));
@@ -94,23 +97,23 @@ public class GeneticAlgorithm {
         //Find crossover point
 
         Random r = new Random();
-        int genelength = parent1.getGene().length();
-        int crossoverpoint = r.nextInt(genelength - 1);
+        int geneLength = parent1.getGene().length();
+        int crossoverPoint = r.nextInt(geneLength - 1);
 
-        String parent1part1 = parent1.getGene().substring(0, crossoverpoint);
-        String parent1part2 = parent1.getGene().substring(crossoverpoint, genelength);
+        String parent1part1 = parent1.getGene().substring(0, crossoverPoint);
+        String parent1part2 = parent1.getGene().substring(crossoverPoint, geneLength);
 
-        String parent2part1 = parent2.getGene().substring(0, crossoverpoint);
-        String parent2part2 = parent2.getGene().substring(crossoverpoint, genelength);
+        String parent2part1 = parent2.getGene().substring(0, crossoverPoint);
+        String parent2part2 = parent2.getGene().substring(crossoverPoint, geneLength);
 
         String child1 = parent1part1 + parent2part2;
         String child2 = parent2part1 + parent1part2;
 
         if (r.nextInt(100) < mutationChance) {
-            child1 = mutate(child1);
+            child1 = mutateGene(child1);
         }
         if (r.nextInt(100) < mutationChance) {
-            child2 = mutate(child2);
+            child2 = mutateGene(child2);
         }
 
         //Add the two new individuals to next generation.
@@ -131,7 +134,7 @@ public class GeneticAlgorithm {
         return getBestIndividual(tournamentPopulation);
     }
 
-    private String mutate(String gene) {
+    private String mutateGene(String gene) {
         StringBuilder mutatedGene = new StringBuilder(gene);
         int index = new Random().nextInt(mutatedGene.length());
 

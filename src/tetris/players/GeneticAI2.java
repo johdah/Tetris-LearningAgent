@@ -4,14 +4,14 @@ import java.awt.*;
 
 
 public class GeneticAI2 extends AbstractAI {
-    double _clears;
-    double _nrOfHoles;
-    double _bumps;
-    double _wallTouches;
-    double _nonFullLines;
-    double _fullLines;
-    double _wells;
-    double _height;
+    private double _clears;
+    private double _nrOfHoles;
+    private double _bumps;
+    private double _wallTouches;
+    private double _nonFullLines;
+    private double _fullLines;
+    private double _wells;
+    private double _height;
 
     public GeneticAI2(double clears, double nrOfHoles, double bumps, double wallTouches, double nonFullLines, double fullLines, double wells, double height) {
         _clears = clears;

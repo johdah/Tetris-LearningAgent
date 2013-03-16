@@ -10,17 +10,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TetrisProblem implements IProblem {
-
-    float _clears;
-    float _nrOfHoles;
-    float _bumps;
-    float _wallTouches;
-    float _nonFullLines;
-    float _fullLines;
-    float _wells;
-    float _height;
-    AITester ait;
-    int samples = 2;
+    private float _clears;
+    private float _nrOfHoles;
+    private float _bumps;
+    private float _wallTouches;
+    private float _nonFullLines;
+    private float _fullLines;
+    private float _wells;
+    private float _height;
+    private AITester ait;
 
     public TetrisProblem() {
         ait = new AITester();
@@ -47,10 +45,10 @@ public class TetrisProblem implements IProblem {
         GeneticAI2 gai;
         try {
             gai = new GeneticAI2(_clears, _nrOfHoles, _bumps, _wallTouches, _nonFullLines, _fullLines, _wells, _height);
-            for (int i = 0; i < samples; i++) {
+            for (int i = 0; i < 2; i++) {
                 testScore = testScore + ait.GetTestGameScore(gai);  //takes more time, but might be worth it
             }
-            testScore = testScore / samples;
+            testScore = testScore / 2;
 
         } catch (InterruptedException ex) {
             Logger.getLogger(TetrisProblem.class.getName()).log(Level.SEVERE, null, ex);
