@@ -6,13 +6,13 @@ import java.util.Random;
 public class MathProblem implements IProblem {
 
     @Override
-    public Individual2 CreateRandomIndividual() {
+    public Individual2 createRandomIndividual() {
         return new Individual2(floatToString(new Random().nextFloat()));
     }
 
     @Override
-    public double CalcFitness(Individual2 individual) {
-        float x = stringToFloat(individual.GetGene());// stringToFloat(individual.getGene());
+    public double calcFitness(Individual2 individual) {
+        float x = stringToFloat(individual.getGene());// stringToFloat(individual.getGene());
 
         //return (Math.pow(x, 2) + 4 * x + 2);
         //x^4 - x^3 – 4x^2 + 2x+5
@@ -20,12 +20,12 @@ public class MathProblem implements IProblem {
     }
 
     @Override
-    public boolean CriteriaSatisfied(List<Individual2> population) {
+    public boolean criteriaSatisfied(List<Individual2> population) {
         return false;
     }
 
     @Override
-    public String GetInfo(Individual2 individual) {
+    public String getInfo(Individual2 individual) {
         return "X=";
     }
 

@@ -4,29 +4,31 @@ import java.lang.Double;
 import java.lang.String;
 
 public class Individual2 {
-    private String _info;
-    private String _gene;
-    private double _fitness = Double.MAX_VALUE;
+	String gene;
+	double fitness = Double.MAX_VALUE;
+    private String info;
 
-    public Individual2(String gene) {
-        _gene = gene;
-    }
-    public String GetGene() {
-        return _gene;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
-    public double GetFitness(){
-        return _fitness;
-    }
+	public Individual2(String gene) {
+		this.gene = gene;
+	}
 
-    void SetFitness(double fitness) {
-        _fitness = fitness;
-    }
+	public String getGene() {
+		return gene;
+	}
+	
+	public double getFitness(){
+		return fitness;
+	}
 
-    public String GetInfo() {
-        return _info;
-    }
-    public void SetInfo(String info) {
-        _info = info;
+	void setFitness(double fitness) {
+		this.fitness = fitness;
+	}
+
+    String getInfo() {
+        return info;
     }
 }

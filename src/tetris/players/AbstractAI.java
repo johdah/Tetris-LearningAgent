@@ -14,7 +14,7 @@ import tetris.Figure;
  */
 public abstract class AbstractAI {
     abstract double rateBoard(Color[][] board);
-    
+
     public void makeBestMove(Color[][] board, Figure figure) {
         if (figure == null) {
             return;
@@ -63,19 +63,19 @@ public abstract class AbstractAI {
                         }
                         figure.xPos++;
                     }
-                    
+
                     figure.undo();
                 }
             }
         }
-        System.out.println(" Score:" + minScore);
+        //    System.out.println(" Score:" + minScore);
         figure.undo();
         figure.xPos = b_x;
         figure.orientation = b_rot;
         figure.yPos = b_y;
         figure.mark();
     }
-        
+
     private void printBoard(Color[][] b) {
         System.out.println("");
         for (int h = 0; h < b.length; h++) {
@@ -92,12 +92,13 @@ public abstract class AbstractAI {
         }
     }
 
-    public double rateFigure(Figure figure,Color[][] board){
-           double score = Double.MAX_VALUE;
-           figure.mark();
-           if (figure.isAllVisible()) 
-                 score = rateBoard(board);
-           figure.unMark();
-           return score;
+    public double rateFigure(Figure figure, Color[][] board) {
+        double score = Double.MAX_VALUE;
+        figure.mark();
+        if (figure.isAllVisible()) {
+            score = rateBoard(board);
+        }
+        figure.unMark();
+        return score;
     }
 }

@@ -338,7 +338,7 @@ public class SquareBoard extends Object {
      * will be repainted by this method.
      */
     public void update() {
-        component.redraw();
+////////////////////////        component.redraw();
     }
 
 

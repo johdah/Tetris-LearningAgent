@@ -10,7 +10,7 @@ public class AITester {
     public int GetTestGameScore(AbstractAI ai) throws InterruptedException{
         Game game = new Game(ai);
   
-        int score = game.GetTestAIScore();
+        int score = game.testAI();
         game.quit();
 
         return score;
