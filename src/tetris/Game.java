@@ -52,12 +52,12 @@ public class Game extends Object {
     float nrOfHoles = (float) 0.9553695;
     float bumps = (float)  0.18940496;
     float wallTouches = (float)     0.14456984;
-    float v5=(float)  0.470316;
-    float v6=(float)   0.41492552;
-    float v7=(float)   0.35952383;
-    float v8=(float)  0.9065037;
+    float nonFullLines =(float)  0.470316;
+    float fullLines=(float)   0.41492552;
+    float wells =(float)   0.35952383;
+    float height =(float)  0.9065037;
    
-    AbstractAI ai = new GeneticAI2(clear, nrOfHoles, bumps, wallTouches,v5,v6,v7,v8);
+    AbstractAI ai = new GeneticAI2(clear, nrOfHoles, bumps, wallTouches, nonFullLines,fullLines,wells, height);
     public static Random rnd = new Random(1);
     /**
      * The main square board. This board is used for the game itself.
