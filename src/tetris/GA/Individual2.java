@@ -4,8 +4,8 @@ import java.lang.Double;
 import java.lang.String;
 
 public class Individual2 {
-	String gene;
-	double fitness = Double.MAX_VALUE;
+    private String gene;
+    private double fitness = Double.MAX_VALUE;
     private String info;
 
     public void setInfo(String info) {

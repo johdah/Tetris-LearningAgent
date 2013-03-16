@@ -5,17 +5,24 @@ import java.awt.*;
 
 public class GeneticAI2 extends AbstractAI {
 
-    double weight1 = 0, weight2 = 0, weight3 = 0, weight4 = 0, weight5 = 0, weight6 = 0, weight7 = 0, weight8 = 0;
+    double _clears;
+    double _nrOfHoles;
+    double _bumps;
+    double _wallTouches;
+    double _nonFullLines;
+    double _fullLines;
+    double _wells;
+    double _height;
 
-    public GeneticAI2(double var1float, double var2float, double var3float, double var4float, double var5float, double var6float, double var7float, double var8float) {
-        weight1 = var1float;
-        weight2 = var2float;
-        weight3 = var3float;
-        weight4 = var4float;
-        weight5 = var5float;
-        weight6 = var6float;
-        weight7 = var7float;
-        weight8 = var8float;
+    public GeneticAI2(double clears, double nrOfHoles, double bumps, double wallTouches, double nonFullLines, double fullLines, double wells, double height) {
+        _clears = clears;
+        _nrOfHoles = nrOfHoles;
+        _bumps = bumps;
+        _wallTouches = wallTouches;
+        _nonFullLines = nonFullLines;
+        _fullLines = fullLines;
+        _wells = wells;
+        _height = height;
 
     }
 
@@ -27,23 +34,23 @@ public class GeneticAI2 extends AbstractAI {
         int nrOfNonFullLines = getNonFullLines(board, maxHeight);
         int touchesWall = edgesTouchingWall(board);
         int wells = getWells(board);
-        int clear = cleardRows(board);
-        int lonelyHoles = loneClosedHoles(board);
+        int clear = clearedRows(board);
+        int fullLines = fullLines(board);
         int bumps = bumpiness(board);
 
         double ratevalue = 0;
 
         //good things
-        ratevalue += -1 * clear * weight1;
-        ratevalue += -1 * touchesWall * weight4;
+        ratevalue += -1 * clear * _clears;
+        ratevalue += -1 * touchesWall * _wallTouches;
 
         //bad things
-        ratevalue += nrOfWholes * weight2;
-        ratevalue += bumps * weight3;
-        ratevalue += nrOfNonFullLines * weight5;
-        ratevalue += lonelyHoles * weight6;
-        ratevalue += wells * weight7;
-        ratevalue += -1 * maxHeight * weight8;
+        ratevalue += nrOfWholes * _nrOfHoles;
+        ratevalue += bumps * _bumps;
+        ratevalue += nrOfNonFullLines * _nonFullLines;
+        ratevalue += fullLines * _fullLines;
+        ratevalue += wells * _wells;
+        ratevalue += -1 * maxHeight * _height;
 
         return ratevalue;
     }
@@ -95,51 +102,22 @@ public class GeneticAI2 extends AbstractAI {
 
         return nrOfLines;
     }
-
-    public int getFullLines(Color[][] board, int maxHeight) {
-        int nrOfLines = 0;
-        for (int h = board.length - maxHeight; h < board.length; h++) {
-            for (int w = 0; w < board[0].length; w++) {
-                if (board[h][w] == null) {
-                    nrOfLines++;
-                    break;
-                }
-            }
-        }
-
-        return nrOfLines;
-    }
     
     public int edgesTouchingWall(Color[][] board) {
         int touches = 0;
-        //vänstervägg
+        //left wall
         for (int i = 0; i < board.length; i++) {
             if (board[i][0] != null) {
                 touches++;
             }
         }
-        //högervägg
+        //right wall
         for (int i = 0; i < board.length; i++) {
             if (board[i][board[0].length - 1] != null) {
                 touches++;
             }
         }
         return touches;
-    }
-
-    public int getClears(Color[][] board) {
-        int clears = 0;
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j] == null) {
-                    break;
-                }
-                if (j == 8) {
-                    clears++;
-                }
-            }
-        }
-        return clears;
     }
 
     private void printBoard(Color[][] b) {
@@ -156,8 +134,7 @@ public class GeneticAI2 extends AbstractAI {
         }
     }
 
-    // Antalet fria rader.
-    public int cleardRows(Color[][] b) {
+    public int clearedRows(Color[][] b) {
         int clear = 0;
         boolean rowClear;
 
@@ -168,15 +145,15 @@ public class GeneticAI2 extends AbstractAI {
                     rowClear = false;
                 }
             }
-            if (rowClear == true) {
+            if (rowClear) {
                 clear++;
             }
         }
         return clear;
     }
 
-    // Räkna antalet inlåsta singel hål.
-    public int loneClosedHoles(Color[][] b) {
+
+    public int fullLines(Color[][] b) {
         int nrHoles = 0;
         for (int h = 0; h < b.length; h++) {
             for (int w = 0; w < b[0].length - 1; w++) {

@@ -16,11 +16,11 @@ public class GeneticAlgorithm {
 
     public static void main(String[] args) {
 
-        GeneticAlgorithm ga = new GeneticAlgorithm(50, 500, new TetrisProblem(), 1000);
+        GeneticAlgorithm ga = new GeneticAlgorithm(5, 500, new TetrisProblem(), 1000);
 
         Individual2 indi = ga.run();
 
-        System.out.println("Best fitness: " + indi.fitness);
+        System.out.println("Best fitness: " + indi.getFitness());
         System.out.println("Information:\n" + indi.getInfo());
     }
 
@@ -49,7 +49,7 @@ public class GeneticAlgorithm {
             for (Individual2 individual : population) {
                 individual.setFitness(problem.calcFitness(individual));
                 individual.setInfo(problem.getInfo(individual));
-                avgFitness += individual.fitness;
+                avgFitness += individual.getFitness();
                 if (progress == popSize / 10) {
                     percentDone += 10;
                     System.out.print(percentDone + "% ");
@@ -60,15 +60,15 @@ public class GeneticAlgorithm {
             System.out.println("");
             Individual2 i = getBestIndividual(population);
 
-            bestFitness = i.fitness * -1;
+            bestFitness = i.getFitness() * -1;
             avgFitness = ((-1 * avgFitness) / population.size());
             totalTime += ((System.currentTimeMillis() - time) / 1000);
-            System.out.println("\n---- Generation " + generation + " Population: " + popSize + " Mutation chance: " + (mutationChance / 10) + "% ----");
+            System.out.println("\n---- Generation " + generation + " Population: " + popSize + " Mutation chance: " + mutationChance  + "% ----");
             System.out.println("Calculation time: " + ((System.currentTimeMillis() - time) / 1000) + "(" + totalTime + ") s");
             System.out.println("Highest score:   " + (bestFitness));
             System.out.println("Average score:    " + (avgFitness));
 
-            System.out.println("Weights\n" + i.getInfo());
+            System.out.println("Weights:\n" + i.getInfo());
             System.out.println("");
 
             //Terminate if termination criteria is met. Defined in IProblem
@@ -106,10 +106,10 @@ public class GeneticAlgorithm {
         String child1 = parent1part1 + parent2part2;
         String child2 = parent2part1 + parent1part2;
 
-        if (r.nextInt(1000) < mutationChance) {
+        if (r.nextInt(100) < mutationChance) {
             child1 = mutate(child1);
         }
-        if (r.nextInt(1000) < mutationChance) {
+        if (r.nextInt(100) < mutationChance) {
             child2 = mutate(child2);
         }
 

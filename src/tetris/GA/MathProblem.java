@@ -12,9 +12,8 @@ public class MathProblem implements IProblem {
 
     @Override
     public double calcFitness(Individual2 individual) {
-        float x = stringToFloat(individual.getGene());// stringToFloat(individual.getGene());
+        float x = stringToFloat(individual.getGene());
 
-        //return (Math.pow(x, 2) + 4 * x + 2);
         //x^4 - x^3 – 4x^2 + 2x+5
         return (Math.pow(x, 4) - Math.pow(x, 3) - 4 * Math.pow(x, 2) + 2 * x + 5);
     }

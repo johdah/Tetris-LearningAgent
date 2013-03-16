@@ -11,14 +11,14 @@ import java.util.logging.Logger;
 
 public class TetrisProblem implements IProblem {
 
-    float weight1;
-    float weight2;
-    float weight3;
-    float weight4;
-    float weight5;
-    float weight6;
-    float weight7;
-    float weight8;
+    float _clears;
+    float _nrOfHoles;
+    float _bumps;
+    float _wallTouches;
+    float _nonFullLines;
+    float _fullLines;
+    float _wells;
+    float _height;
     AITester ait;
     int samples = 2;
 
@@ -45,16 +45,16 @@ public class TetrisProblem implements IProblem {
         parseGenome(individual.getGene(), 8);
         int testscore = 0;
         try {
-            GeneticAI2 gai = new GeneticAI2(weight1, weight2, weight3, weight4, weight5, weight6, weight7, weight8);
+            GeneticAI2 gai = new GeneticAI2(_clears, _nrOfHoles, _bumps, _wallTouches, _nonFullLines, _fullLines, _wells, _height);
             for (int i = 0; i < samples; i++) {
-                testscore = testscore + ait.GetTestGameScore(gai);  //tar givetvis mer tid men jag tror det kan vara värt det. kanske. 
+                testscore = testscore + ait.GetTestGameScore(gai);  //takes more time, but might be worth it
             }
             testscore = testscore / samples;
 
         } catch (InterruptedException ex) {
             Logger.getLogger(TetrisProblem.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //  return Integer.MAX_VALUE - testscore;
+
         return testscore * -1;
     }
 
@@ -94,37 +94,28 @@ public class TetrisProblem implements IProblem {
 
     public void parseGenome(String genome, int numberOfGenes) {
         int length = genome.length() / numberOfGenes;
-        String var1 = genome.substring(0, length);
-        String var2 = genome.substring(length, 2 * length);
-        String var3 = genome.substring(2 * length, 3 * length);
-        String var4 = genome.substring(3 * length, 4 * length);
-        String var5 = genome.substring(4 * length, 5 * length);
-        String var6 = genome.substring(5 * length, 6 * length);
-        String var7 = genome.substring(6 * length, 7 * length);
-        String var8 = genome.substring(7 * length, genome.length());
 
-
-        weight1 = stringToFloat(var1);
-        weight2 = stringToFloat(var2);
-        weight3 = stringToFloat(var3);
-        weight4 = stringToFloat(var4);
-        weight5 = stringToFloat(var5);
-        weight6 = stringToFloat(var6);
-        weight7 = stringToFloat(var7);
-        weight8 = stringToFloat(var8);
+        _clears = stringToFloat(genome.substring(0, length));
+        _nrOfHoles = stringToFloat(genome.substring(length, 2 * length));
+        _bumps = stringToFloat(genome.substring(2 * length, 3 * length));
+        _wallTouches = stringToFloat(genome.substring(3 * length, 4 * length));
+        _nonFullLines = stringToFloat(genome.substring(4 * length, 5 * length));
+        _fullLines = stringToFloat(genome.substring(5 * length, 6 * length));
+        _wells = stringToFloat(genome.substring(6 * length, 7 * length));
+        _height = stringToFloat(genome.substring(7 * length, genome.length()));
     }
 
     @Override
     public String getInfo(Individual2 individual) {
         String s = "";
-        s += "Clears:      " + weight1
-                + "\nNrOfWholes:  " + weight2
-                + "\nBumps:       " + weight3
-                + "\nTouchWall:   " + weight4
-                + "\nNonFullLines:" + weight5
-                + "\nFullLines:   " + weight6
-                + "\nWells:       " + weight7
-                + "\nHeight       " + weight8;
+        s += "Clears:      " + _clears
+                + "\nNrOfWholes:  " + _nrOfHoles
+                + "\nBumps:       " + _bumps
+                + "\nTouchWall:   " + _wallTouches
+                + "\nNonFullLines:" + _nonFullLines
+                + "\nFullLines:   " + _fullLines
+                + "\nWells:       " + _wells
+                + "\nHeight:       " + _height;
         return s;
     }
 
