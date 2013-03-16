@@ -36,26 +36,27 @@ public class TetrisProblem implements IProblem {
                 + floatToString(getFloat())
                 + floatToString(getFloat())
                 + floatToString(getFloat());
-        parseGenome(genome, 8);
+        parseGenome(genome);
         return new Individual2(genome);
     }
 
     @Override
     public double calcFitness(Individual2 individual) {
-        parseGenome(individual.getGene(), 8);
-        int testscore = 0;
+        parseGenome(individual.getGene());
+        int testScore = 0;
+        GeneticAI2 gai;
         try {
-            GeneticAI2 gai = new GeneticAI2(_clears, _nrOfHoles, _bumps, _wallTouches, _nonFullLines, _fullLines, _wells, _height);
+            gai = new GeneticAI2(_clears, _nrOfHoles, _bumps, _wallTouches, _nonFullLines, _fullLines, _wells, _height);
             for (int i = 0; i < samples; i++) {
-                testscore = testscore + ait.GetTestGameScore(gai);  //takes more time, but might be worth it
+                testScore = testScore + ait.GetTestGameScore(gai);  //takes more time, but might be worth it
             }
-            testscore = testscore / samples;
+            testScore = testScore / samples;
 
         } catch (InterruptedException ex) {
             Logger.getLogger(TetrisProblem.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return testscore * -1;
+        return testScore * -1;
     }
 
     @Override
@@ -66,34 +67,34 @@ public class TetrisProblem implements IProblem {
     public static float stringToFloat(String binaryString) {
 
         String absolute_number = binaryString.substring(1, binaryString.length());
-        String oper = binaryString.substring(0, 1);
-        float operInt;
-        if (oper.equals("1")) {
-            operInt = -1;
+        String op = binaryString.substring(0, 1);
+        float opInt;
+        if (op.equals("1")) {
+            opInt = -1;
         } else {
-            operInt = 1;
+            opInt = 1;
         }
         int intBits = Integer.parseInt(absolute_number, 2);
-        return Float.intBitsToFloat(intBits) * operInt;
+        return Float.intBitsToFloat(intBits) * opInt;
     }
 
     public static String floatToString(float number) {
-        String operString;
+        String opString;
         String binaryString;
         if (number < 0) {
-            operString = "1";
+            opString = "1";
             number = number * -1;
             binaryString = Integer.toBinaryString(Float.floatToIntBits(number));
         } else {
-            operString = "0";
+            opString = "0";
             binaryString = Integer.toBinaryString(Float.floatToIntBits(number));
 
         }
-        return operString + binaryString;
+        return opString + binaryString;
     }
 
-    public void parseGenome(String genome, int numberOfGenes) {
-        int length = genome.length() / numberOfGenes;
+    public void parseGenome(String genome) {
+        int length = genome.length() / 8;
 
         _clears = stringToFloat(genome.substring(0, length));
         _nrOfHoles = stringToFloat(genome.substring(length, 2 * length));
@@ -107,16 +108,16 @@ public class TetrisProblem implements IProblem {
 
     @Override
     public String getInfo(Individual2 individual) {
-        String s = "";
-        s += "Clears:      " + _clears
-                + "\nNrOfWholes:  " + _nrOfHoles
+        String info = "";
+        info += "Clears:      " + _clears
+                + "\nNrOfHoles:  " + _nrOfHoles
                 + "\nBumps:       " + _bumps
-                + "\nTouchWall:   " + _wallTouches
+                + "\nWallTouches:   " + _wallTouches
                 + "\nNonFullLines:" + _nonFullLines
                 + "\nFullLines:   " + _fullLines
                 + "\nWells:       " + _wells
                 + "\nHeight:       " + _height;
-        return s;
+        return info;
     }
 
     private float getFloat() {

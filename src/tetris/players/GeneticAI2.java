@@ -4,7 +4,6 @@ import java.awt.*;
 
 
 public class GeneticAI2 extends AbstractAI {
-
     double _clears;
     double _nrOfHoles;
     double _bumps;
@@ -23,12 +22,10 @@ public class GeneticAI2 extends AbstractAI {
         _fullLines = fullLines;
         _wells = wells;
         _height = height;
-
     }
 
     @Override
     public double rateBoard(Color[][] board) {
-
         int maxHeight = getMaxHeight(board);
         int nrOfWholes = getHoles(board, maxHeight);
         int nrOfNonFullLines = getNonFullLines(board, maxHeight);
@@ -38,21 +35,21 @@ public class GeneticAI2 extends AbstractAI {
         int fullLines = fullLines(board);
         int bumps = bumpiness(board);
 
-        double ratevalue = 0;
+        double rateValue = 0;
 
         //good things
-        ratevalue += -1 * clear * _clears;
-        ratevalue += -1 * touchesWall * _wallTouches;
+        rateValue += -1 * clear * _clears;
+        rateValue += -1 * touchesWall * _wallTouches;
 
         //bad things
-        ratevalue += nrOfWholes * _nrOfHoles;
-        ratevalue += bumps * _bumps;
-        ratevalue += nrOfNonFullLines * _nonFullLines;
-        ratevalue += fullLines * _fullLines;
-        ratevalue += wells * _wells;
-        ratevalue += -1 * maxHeight * _height;
+        rateValue += nrOfWholes * _nrOfHoles;
+        rateValue += bumps * _bumps;
+        rateValue += nrOfNonFullLines * _nonFullLines;
+        rateValue += fullLines * _fullLines;
+        rateValue += wells * _wells;
+        rateValue += -1 * maxHeight * _height;
 
-        return ratevalue;
+        return rateValue;
     }
 
     public int getMaxHeight(Color[][] board) {
@@ -106,14 +103,14 @@ public class GeneticAI2 extends AbstractAI {
     public int edgesTouchingWall(Color[][] board) {
         int touches = 0;
         //left wall
-        for (int i = 0; i < board.length; i++) {
-            if (board[i][0] != null) {
+        for (Color[] aBoard : board) {
+            if (aBoard[0] != null) {
                 touches++;
             }
         }
         //right wall
-        for (int i = 0; i < board.length; i++) {
-            if (board[i][board[0].length - 1] != null) {
+        for (Color[] aBoard : board) {
+            if (aBoard[board[0].length - 1] != null) {
                 touches++;
             }
         }
@@ -122,9 +119,9 @@ public class GeneticAI2 extends AbstractAI {
 
     private void printBoard(Color[][] b) {
         System.out.println("");
-        for (int h = 0; h < b.length; h++) {
+        for (Color[] aB : b) {
             for (int w = 0; w < b[0].length; w++) {
-                if (b[h][w] == null) {
+                if (aB[w] == null) {
                     System.out.print("0 ");
                 } else {
                     System.out.print("X ");
@@ -138,10 +135,10 @@ public class GeneticAI2 extends AbstractAI {
         int clear = 0;
         boolean rowClear;
 
-        for (int h = 0; h < b.length; h++) {
+        for (Color[] aB : b) {
             rowClear = true;
             for (int w = 0; w < b[0].length; w++) {
-                if (b[h][w] != null) {
+                if (aB[w] != null) {
                     rowClear = false;
                 }
             }
